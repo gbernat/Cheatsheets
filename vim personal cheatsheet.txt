@@ -1,0 +1,430 @@
+﻿Cursor movement
+===============
+h j k l 	- move cursor left/down/up/right
+w 			- jump forwards to the start of a word
+W 			- jump forwards to the start of a word (words can contain punctuation)
+e 			- jump forwards to the end of a word
+E 			- jump forwards to the end of a word (words can contain punctuation)
+b 			- jump backwards to the start of a word
+B 			- jump backwards to the start of a word (words can contain punctuation)
+0 			- jump to the start of the line
+^ or _		- jump to the first non-blank character of the current line
+$ 			- jump to the end of the line
+gm          - jump to the middle of the line
+
+-			- lines upward, on the first non-blank character
++ or enter	- lines downward, on the first non-blank character
+
+1G or gg 	- go to the first line of the document
+G 			- go to the last line of the document
+5G or :5 	- go to line 5
+5l 			- go to column 5
+
+fx 			- jump to next occurrence of character x (Fx -> previous)
+tx 			- jump to before next occurrence of character x (Tx -> previuos)
+2fx			- jump to the 2nd occurrence occurrence of character x
+
+H M L 		- go to top/middle/bottom of the screen
+Ctrl + b 	- move back one full screen
+Ctrl + f 	- move forward one full screen
+Ctrl + u 	- move back 1/2 a screen
+Ctrl + d 	- move forward 1/2 a screen
+
+zz or z.    - scroll the line with the cursor to the center of the screen
+
+} 			- jump to next paragraph (or function/block, when editing code)
+{ 			- jump to previous paragraph (or function/block, when editing code)
+% 			- Move cursor to matching ([{}])
+[[ 			- Jump to function start
+[{ 			- Jump to block start
+
+Ctrl-O		- Go to Older cursor position in jump list (not a motion command)
+Ctrl-i		- Go to Newer cursor position in jump list (not a motion command)
+
+
+Insert mode - inserting/appending text
+======================================
+i 			- insert before the cursor
+I 			- insert at the beginning of the line
+a 			- insert (append) after the cursor
+A 			- insert (append) at the end of the line
+o 			- append (open) a new line below the current line
+O 			- append (open) a new line above the current line
+ea 			- insert (append) at the end of the word
+
+Editing
+=======
+r 			- replace a single character
+J 			- join line below to the current one
+cc or S		- change (replace) entire line
+cw 			- change (replace) to the end of the word
+c$ 			- change (replace) to the end of the line
+s 			- delete character and substitute text
+u 			- undo
+Ctrl + r 	- redo
+. 			- repeat last command
+5. 			- Repeats 5 times the last change made in normal mode
+
+di(			- delete within the current paren
+di"			- delete the text between the quotes
+
+Marking text (VISUAL mode)
+==========================
+v 			- start visual mode, mark lines, then do a command (like y-yank)
+V 			- start linewise visual mode
+Ctrl + v 	- start visual block mode
+o 			- move to other end of marked area (start)
+O 			- move to other corner of block (end)
+aw 			- mark a word
+ab 			- a block with ()
+aB 			- a block with {}
+ib 			- inner block with ()
+iB 			- inner block with {}
+
+gv			- Reselects last visual selection
+
+VISUAL commands
+===============
+> 			- shift text right
+< 			- shift text left
+y 			- yank (copy) marked text
+d 			- delete marked text
+
+Cut and paste
+=============
+yy 			- yank (copy) a line
+2yy 		- yank (copy) 2 lines
+yw 			- yank (copy) word
+y$ 			- yank (copy) to end of line
+p 			- put (paste) the clipboard after cursor
+P 			- put (paste) before cursor
+dd 			- delete (cut) a line
+2dd 		- delete (cut) 2 lines
+dw 			- delete (cut) word
+D 			- delete (cut) to the end of the line
+d$ 			- delete (cut) to the end of the line
+x 			- delete (cut) character
+:[range]d[elete]			- Delete [range] lines (default: current line)
+:[range]d[elete] {count}	- Delete {count} lines, starting with [range]
+:6y			- yank line 6
+:2,6y		- yank range lines 2 to 6
+
+viwp        - Replace a word with yanked text
+pgvy        - Paste without loose yanked. Se puede agregar a vimrc: xnoremap p pgvy
+
+:40,50m30 	- move lines 40 through 50 to line 30
+
+Search
+======
+/pattern 	- search for pattern
+?pattern 	- search backward for pattern
+/\cpattern	- search pattern case insensitive
+\vpattern 	- 'very magic' pattern: non-alphanumeric characters are interpreted as special regex symbols (no escaping needed)
+/jo[ha]n	- Search john or joan
+/\< the		- Search the, theatre or then (WORD starting with the)
+/the\>		- Search the or breathe (WORD finished in the)
+/\<the\>	- Search the
+/^the       - Search lines starting with the
+/the$       - Search lines ending with the
+/fred\|joe	- Search fred or joe
+/fred.*joe	- Search fred and joe in the line
+
+n 			- repeat search in same direction
+N 			- repeat search in opposite direction
+:noh 		- remove highlighting of search matches
+* 			- Search forward the word under the cursor
+# 			- search backward the word under the cursor
+
+Search for selection: 
+yank, then go to / and CTRL-R 0
+
+:%s/pattern-here//gn	- Show Count of matches in search
+:g/pattern/             - List all lines containing the pattern searched
+:g//                    - List all lines containing the last pattern searched
+
+Replace
+=======
+:s/Bill/Steve/			- Replace the first occurence of Bill by Steve in current line
+:s/Bill/Steve/g			- Replace Bill by Steve in current line
+:%s/old/new/g 			- replace all old with new throughout file
+:%s/old/new/gc 			- replace all old with new throughout file with confirmations
+:%s/onward/forward/gi	- Replace onward by forward, case unsensitive
+:2,35s/old/new/g		- Replace all occurences between lines 2 and 35
+:.,$s/foo/bar/g			- Change each 'foo' to 'bar' for all lines from the current line (.) to the last line ($) inclusive.
+:.,+2s/foo/bar/g		- Change each 'foo' to 'bar' for the current line (.) and the two next lines (+2).
+
+:%s/^/hello/g			- Replace the begining of each line by hello
+:%s/$/Harry/g			- Replace the end of each line by Harry
+
+Visual select, :s/^/#/  - Comment visual selected lines.
+:1,3s/^/#/              - Comment lines 1 to 3
+:1,3s/^#/               - UnComment lines 1 to 3
+:g/\Linux/s/^/#/        - Comment lines that contains "Linux"
+:norm I# ; :%norm I# ; :1,3norm I - Comment lines. Also works with Visual
+
+:g/string/d				- Delete all lines containing string. (Apply a command to all lines matching a search)
+:v/string/d or :g!/string/d	- Delete all lines which didn’t contain string
+:g/^baz/s/foo/bar/g		- Change each 'foo' to 'bar' in each line starting with 'baz'.
+
+:%s/^M//g				- Delete DOS carriage returns (^M)
+:%s/\r/\r/g				- Transform DOS carriage returns in returns
+
+:%s/\s\+$//				- Delete all trailing whitespace (at the end of each line)
+:%s/^\s\+//				- Delete (leading) whitespace at the beginning of each line
+:%le 					- Otra opcion para sacar espacios al principio
+
+:'<,'>s/foo/bar/g 		- change each 'foo' to 'bar' for all lines within a visual selection
+
+:%s//bar/g 				- Replace each match of the last search pattern with 'bar'. For example, * search.
+
+
+==>About :s and :g:
+:[range]g/LinesThatMatchThisRegex/ExecuteThisCommand
+:[range]s/SearchRegex/Replacement/[flags]
+where:
+range: no range (first occurrence in line); % (all buffer); 1,3 (lines 1 to 3) 
+flags: g (all occurrences in line); c (ask for confirmation); i (ignore case); I (exact case); n (report number of occurrences)
+
+
+Case
+====
+Vu o guu	- Lowercase line
+VU o gUU	- Uppercase line
+V~      	- Toggle case line
+ggguG		- Set all text to lowercase
+gggUG		- Set all text to uppercase
+Syntax: g[uU~]<movement> 
+
+
+Indentation
+===========
+>>   	- Indent line by shiftwidth spaces
+<<   	- De-indent line by shiftwidth spaces
+5>>  	- Indent 5 lines
+5==  	- Re-indent 5 lines (according to your indentation settings: shiftwidth)
+
+>%   	- Increase indent of a braced or bracketed block (place cursor on brace first)
+=%   	- Reindent a braced or bracketed block (cursor on brace)
+<%   	- Decrease indent of a braced or bracketed block (cursor on brace)
+]p   	- Paste text, aligning indentation with surroundings
+
+=i{  	- Re-indent the 'inner block', i.e. the contents of the block
+=a{  	- Re-indent 'a block', i.e. block and containing braces
+=2a{ 	- Re-indent '2 blocks', i.e. this block and containing block
+
+>i{  	- Increase inner block indent
+<i{  	- Decrease inner block indent
+
+Vjj> 	- In VISUAL Mode: Visually mark and then indent 3 lines
+
+CTRL-t  - In INSERT Mode: insert indent at start of line
+CTRL-d  - In INSERT Mode: remove indent at start of line
+
+:4,8>   - indent lines 4 to 8, inclusive
+
+
+Execute shell commands
+======================
+:!pwd	- Execute the pwd unix command, then returns to Vi
+!!pwd	- Execute the pwd unix command and insert output in file
+
+Auto-completion
+===============
+Ctrl-n 			- Complete word next match
+Ctrl-p 			- Complete word previous match
+Ctrl-x Ctrl-o 	- Omni completion. For filetype-specific (programming lang) completion.
+
+
+Macros & Registers
+================
+q<letter>		- start recording to register <letter>
+...				- steps
+q 				- stop recording
+@<letter>		- excecute
+
+:reg [letter] 	- view contents of register
+"0p o Ctrl-r 0 (en insert)      - Paste last yanked 
+"1-9p o Ctrl-r 1-9 (en insert)  - Paste last deleted
+"[a-z]p         - Paste a-z reg content
+"[a-z]y         - Yank in a-z reg
+
+"%              - Current File and path
+"/ "? "* "#     - Contains the last search.
+
+
+Buffers
+=======
+:e filename 	- Open new buffer with filename
+:ls 			- List open buffers
+:bn 			- go to the next buffer
+:bp 			- go to the previous buffer
+:b3	o 3Ctrl-6(ˆ)- go to buffer 3
+:b nombreaprox	- go to buffer whith aprox name
+:b <TAB>		- cycle open buffers names
+Ctrl-6(ˆ)		- toggle between the current and the last buffer 
+
+:bd  / :bd 1 2 / :%bd	- delete a buffer (close a file)
+:wa				- write all changed files (save all changes)
+
+:ball o :sba / :vert ball o :vert sba 	- Open all buffers into splitted windows
+:sp / :vsp      - Open new file in split
+:Vexplore       - Vertical split and Explore
+
+
+Windows
+=======
+Ctrl-w v 		- Split Vertical
+Ctrl-w s 		- Split Horizontal
+Ctrl-w [hjkl]	- Move between splits
+CTRL-w w 		- go to next window
+
+CTRL-w H	   	- move current window to the far left and use the full height of the screen
+CTRL-w J	   	- move current window to the very bottom and use the full width of the screen
+CTRL-w K	   	- move current window to the very top and use the full width of the screen
+CTRL-w L	   	- move current window to the far right and use the full height of the screen
+
+CTRL-w r / R 	- Rotates the windows from left to right / right to left, only if the windows are split vertically
+
+Ctrl-w n 		- Create new file splitted (hace :split y :e)
+CTRL-w c	   	- close current window (like |:close|)
+CTRL-w o	   	- close all but current window (like |:only|)
+CTRL-w q	   	- quit current window (like |:quit|)
+
+CTRL-w = 		- Resize the windows equally
+CTRL-W _	   	- set current window height to screen
+CTRL-W |	   	- set current window width to screen
+
+
+Tabs
+====
+:tabe[dit] o :tabnew	- edit a file in a new tab page
+CTRL-w T 		- Move current window to a new tab
+gt	gT			- go to the next/previous tab page
+
+
+Maximizar una window sin perder los splits:
+:tab sp (to split the current window into a new tab). Ctrl-W c (to close the newly opened tab)
+
+
+Sessions and recent files
+=========================
+:bro[wse] ol[dfiles][!]     - List recent file names, and then prompt for a number. Use ! to abandon a modified buffer.
+
+:mksession [nombresession.vim]  - Save the current files open session in ~/[nombre]Session.vim
+:source ~/Session.vim       - Reload saved session within vim
+$ vim -S Session.vim        - Reload saved session executing vim
+
+Add to vimrc to automatically save and load the session when leaving and entering vim:
+autocmd! VimLeave * mksession
+autocmd! VimEnter * source ~/Session.vim
+
+
+Folding
+=======
+zo		- Open one fold under the cursor.
+zO		- Open all folds under the cursor recursively
+zc		- Close one fold under the cursor
+zC		- Close all folds under the cursor recursively
+za		- Toggle open/close fold
+zA		- Toggle open/close recursively
+zM		- Close all folds
+zR		- Open all folds
+
+
+Marks
+=====
+ma	- set mark a at current cursor location
+'a	- jump to line of mark a (first non-blank character in line)
+`a	- jump to position (line and column) of mark a
+d'a	- delete from current line to line of mark a
+d`a	- delete from current cursor position to position of mark a
+c'a	- change text from current line to line of mark a
+y`a	- yank text to unnamed buffer from cursor to position of mark a
+:marks	- list all the current marks
+
+
+Misc
+====
+:set wrap / :set nowrap		- ajuste / desajuste de linea
+
+:help comando 				- Muestra la ayuda del comando
+:set commando? 				- muestra el estado actual del comando
+:set 						- show all modified options
+:set all					- show all non-termcap options
+
+:set syntax?				- Muestra que lenguaje detecto
+:set sytnax=nombrelenguaje	- setea identificacion de lenguaje 
+
+:set list					- show invisible chars
+
+Ctrl-R 0					- Register 0, which contains the text from the most recent yank command.
+
+:Explore                    - Open File Explorer
+:[VH]explore                - Vertical/Horizontal split and Explore
+
+Ctrl+o+o			- Open last edited file and set cursor in last position
+
+Mega documentacion VIM:
+http://vimdoc.sourceforge.net/
+
+
+
+Formas de cerrar
+================
+
+:quit :q Ctrl-w q
+-----------------
+Quit the current window.  
+When quitting the last window (not counting a help window),
+exit Vim.
+
+When 'hidden' is set, and there is only one window for the
+current buffer, it becomes hidden.  When 'hidden' is not set,
+and there is only one window for the current buffer, and the
+buffer was changed, the command fails.
+
+
+:close Ctrl-w c
+---------------
+Close the current window. 
+When the 'hidden' option is set, or when the buffer was
+changed and the [!] is used, the buffer becomes hidden (unless
+there is another window editing it).
+
+This command fails when:
+- There is only one window on the screen.
+- When 'hidden' is not set, [!] is not used, the buffer has
+  changes, and there is no other window on this buffer.
+Changes to the buffer are not written and won't get lost, so
+this is a "safe" command.
+
+
+:on[ly][!] CTRL-W o		
+--------------------
+Make the current window the only one on the screen.  All other
+windows are closed ( :quit)
+
+When the 'hidden' option is set, all buffers in closed windows
+become hidden.
+
+When 'hidden' is not set, and the 'autowrite' option is set,
+modified buffers are written.  Otherwise, windows that have
+buffers that are modified are not removed, unless the [!] is
+given, then they become hidden.  But modified buffers are
+never abandoned, so changes cannot get lost.
+
+
+:bd[elete][!] [N]
+-----------------
+Unload buffer [N] and delete it from
+the buffer list.  If the buffer was changed, this fails,
+unless when [!] is specified, in which case changes are lost.
+The file remains unaffected.  Any windows for this buffer are
+closed.  If buffer [N] is the current buffer, another buffer
+will be displayed instead.  
+
+
+
+
+
+
