@@ -23,6 +23,7 @@ G 			- go to the last line of the document
 fx 			- jump to next occurrence of character x (Fx -> previous)
 tx 			- jump to before next occurrence of character x (Tx -> previuos)
 2fx			- jump to the 2nd occurrence occurrence of character x
+;       - repeat last fFtT
 
 H M L 		- go to top/middle/bottom of the screen
 Ctrl + b 	- move back one full screen
@@ -31,16 +32,19 @@ Ctrl + u 	- move back 1/2 a screen
 Ctrl + d 	- move forward 1/2 a screen
 
 zz or z.    - scroll the line with the cursor to the center of the screen
+zt          - scroll the line with the cursor to the top
+zb          - scroll the line with the cursor to the bottom
 
 } 			- jump to next paragraph (or function/block, when editing code)
 { 			- jump to previous paragraph (or function/block, when editing code)
-% 			- Move cursor to matching ([{}])
+% 			- Jump cursor to matching ( ) [ ] { }
 [[ 			- Jump to function start
 [{ 			- Jump to block start
 
-Ctrl-O		- Go to Older cursor position in jump list (not a motion command)
-Ctrl-i		- Go to Newer cursor position in jump list (not a motion command)
-
+'.        - Jump to last modification line.
+`.        - Jump to exact spot in last modification line
+Ctrl-O : Retrace your movements in file in backwards in jump list.
+Ctrl-I : Retrace your movements in file in forwards in jump list.
 
 Insert mode - inserting/appending text
 ======================================
