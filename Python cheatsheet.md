@@ -202,8 +202,6 @@ Requires: pycparser
 Requires: 
 ```
 
-
-
 ---
 
 ## Installation package
@@ -215,10 +213,19 @@ Esto se ejecuta en el path donde esta setup.py, y crea el .tar.gz en /dist
 ```
 
 - Instalar / updatear desde tar.gz:  
+```
 # pip install -–user <package_name>-x.x.x.tar.gz
 o
 (usar este) # pip install --upgrade <package_name>-x.x.x.tar.gz
+```
 
+- Install package in specified dir, instead of default Pyhton location:  
+Example in current dir:  
+```
+# pip3 install paramiko -t .
+```
 - Listar paquetes instalados:  
+```
 pip list o pip freeze
+```
 

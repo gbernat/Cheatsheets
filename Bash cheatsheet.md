@@ -249,5 +249,7 @@ List service type units: ```$ systemctl list-units --type=service```
 Displaying Dependencies: ```$ systemctl list-dependencies sshd.service```  
 
 
+## curl
+https://linux.die.net/man/1/curl
 
 
