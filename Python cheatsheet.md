@@ -1,5 +1,6 @@
 # Python cheatsheet
 
+---
 ## Environments
 ### 1) Legacy:
 
@@ -201,6 +202,51 @@ Requires: pycparser
 (venv) Giskard:tstdependencies guido$ pip3 show pycparser |grep -i requires
 Requires: 
 ```
+- Subprocess  
+  - How to execute multiple commands in a single subprocess call:
+```python
+res = subprocess.run(['ssh', '-i', '/Users/EC2.pem', 'ec2-user@1.1.1.1;', 'ls', '-hal', '/tmp/;', 'pwd'], shell=False, stdout=subprocess.PIPE)
+
+res.stdout
+```
+```
+b'total 0\ndrwxrwxrwt  9 root     root     261 Jan 15 10:20 .\ndr-xr-xr-x 18 root     root     257 Jan  6 23:15 ..\ndrwxrwxrwt  2 root     root       6 Jan  6 23:15 .font-unix\ndrwxrwxrwt  2 root     root       6 Jan  6 23:15 .ICE-unix\n-rw-r--r--  1 ec2-user ec2-user   0 Jan 15 03:52 pepe\ndrwx------  3 root     root      17 Jan 15 10:20 systemd-private.service-lcjkJ5\ndrwx------  3 root     root      17 Jan 15 10:20 systemd-private-httpd.service-qFuTJf\ndrwxrwxrwt  2 root     root       6 Jan  6 23:15 .Test-unix\n/home/ec2-user\n'
+```
+```
+res
+```
+```
+CompletedProcess(args=['ssh', '-i', '/Users//EC2.pem', 'ec2-user@52.67.253.187', 'ls', '-hal', '/tmp/;', 'pwd'], returncode=0, stdout=b'total 0\ndrwxrwxrwt  9 root     root     261 Jan 15 10:20 .\ndr-xr-xr-x 18 root     root     257 Jan  6 23:15 ..\ndrwxrwxrwt  2 root     root       6 Jan  6 23:15 .font-unix\ndrwxrwxrwt  2 root     root       6 Jan  6 23:15 .ICE-unix\n-rw-r--r--  1 ec2-user ec2-user   0 Jan 15 03:52 pepe\ndrwx------  3 root     root      17 Jan 15 10:20 systemd-private.service-lcjkJ5\ndrwx------  3 root     root      17 Jan 15 10:20 systemd-private-httpd.service-qFuTJf\ndrwxrwxrwt  2 root     root       6 Jan  6 23:15 .Test-unix\n/home/ec2-user\n')
+```
+
+Subprocess returns stdout in binary. To convert to String:  
+```res.stdout.decode('utf-8')```  
+  
+  
+  - Optionally (however, using subprocess.run is prefered):
+```
+encoding = 'latin1'  
+p = subprocess.Popen('cmd.exe', stdin=subprocess.PIPE,
+             stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+for cmd in cmds:
+    p.stdin.write(cmd + "\n")
+p.stdin.close()
+print p.stdout.read()
+```
+  Ref: https://stackoverflow.com/questions/39721924/how-to-run-multiple-commands-synchronously-from-one-subprocess-popen-command/39722695
+
+- **Prefered method to execute commands and getting output:**  
+```python
+res = subprocess.run([cmd, arg1, arg2], capture_output=True)  
+stdout_in_string = res.stdout.decode('utf-8')
+```  
+> capture_output=True is equal to stdout=subprocess.PIPE, stderr=subprocess.PIPE (since Python 3.5)  
+Since Python 3.7 instead of using .decode('utf-8') to get it in string, use run param: ```text=True``` 
+
+
+
+
+
 
 ---
 
@@ -228,4 +274,47 @@ Example in current dir:
 ```
 pip list o pip freeze
 ```
+
+---
+## Logging among classes
+To get logging either from main program as inner classes:
+
+In main script:  
+```python
+import logging
+
+# Global logging config
+log_file = '/tmp/log_file.log'
+
+file_handler = logging.FileHandler(filename=log_file)
+console_handler = logging.StreamHandler()
+
+file_handler.setLevel(logging.WARNING)    # specific for file, if needed
+console_handler.setLevel(logging.INFO)    # specific for console, if needed
+
+formater = logging.Formatter('%(asctime)s - %(name)s - [%(levelname)s] - %(message)s')
+file_handler.setFormatter(formatter)
+console_handler.setFormatter(formatter)
+
+# root logger, no __name__ as in submodules further down the hierarchy
+##global logger
+logger = logging.getLogger()
+logger.setLevel(logging.DEBUG)  # general
+
+logger.addHander(file_handler)
+logger.addHander(console_handler)
+
+```
+
+
+In inner classes:  
+```python
+import logging
+
+# Global
+logger = logging.getLogger(__name__)
+```
+
+---
+
 
