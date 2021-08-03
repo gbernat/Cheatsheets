@@ -316,5 +316,93 @@ logger = logging.getLogger(__name__)
 ```
 
 ---
+## Error handling behavior
+Showing by examples the behavior of error handling on inner funtions, parents, and raising
+
+### Example code with error variants:
+```python
+def error_not_catched():
+    1/0
+    print('[fn] I have just made a fatal error. Never executed...')
+
+def error_catched():
+    try:
+        1/0
+    except Exception as e:
+        print('[fn] I made an error, but I captured it. Error: {}'.format(e))
+
+def catched_and_raised():
+    try:
+        1/0
+    except Exception as e:
+        print('[fn] I made an error, I captured it, and I am raising it. Error: {}'.format(e))
+        raise 
+        print('[fn] After raise in except. Never executed...')
+    print('[fn] After raise in outside try/except block.')
+
+def no_catched_raise_something():
+    raise Exception('This is the exception expected to handle. Derives from Exception, but can be anyother more accurate.')
+    print('[fn] After raise. Never executed...')
+
+
+def parent_function():
+    try:
+        print('[main] Calling func that fails without error capture:')
+        error_not_catched()
+        print('[main] Result: program cancel if not captured in parent. Never executed...')
+    except Exception as e:
+        print('[main_except] Result: Captured in parent. Error: {}\n'.format(e))
+        
+    print('[main] Calling func that fails and error is captured inside:')
+    error_catched()
+    print("[main_except] Result: parent func doesn't notice the inner error. Program continues.\n")
+    
+    try:
+        print('[main] Calling func that captures error and raises in except:')
+        catched_and_raised()
+        print('After raise. Never executed...')
+    except Exception as e:
+        print('[main_except] Result: parent func recives the error and program cancel if not handled in parent.')
+        print('[main_except] Captured in parent. Inner error raised: {}\n'.format(e))
+      
+    print('[main] Calling func that manually raises something:')
+    try:
+        no_catched_raise_something()
+        print('After raise. Never executed...')
+    except Exception as e:
+        print('[main_excpet] Result: parent func recives the error and program cancel if not handled in parent. Inner funtion cancels execution after raise.')
+        print('[main_except] Captured in parent. Inner eror raised: {}\n'.format(e))
+
+
+parent_function()
+
+```
+
+### Output:
+```
+[main] Calling func that fails without error capture:
+[main_except] Result: Captured in parent. Error: division by zero
+
+[main] Calling func that fails and error is captured inside:
+[fn] I made an error, but I captured it. Error: division by zero
+[main_except] Result: parent func doesn't notice the inner error. Program continues.
+
+[main] Calling func that captures error and raises in except:
+[fn] I made an error, I captured it, and I am raising it. Error: division by zero
+[main_except] Result: parent func recives the error and program cancel if not handled in parent.
+[main_except] Captured in parent. Inner error raised: division by zero
+
+[main] Calling func that manually raises something:
+[main_excpet] Result: parent func recives the error and program cancel if not handled in parent. Inner funtion cancels execution after raise.
+[main_except] Captured in parent. Inner eror raised: This is the exception expected to handle. Derives from Exception, but can be anyother more accurate.
+```
+
+> References:
+https://stackoverflow.com/questions/2052390/manually-raising-throwing-an-exception-in-python  
+https://docs.python.org/3/library/exceptions.html#exception-hierarchy  
+https://docs.python.org/3/tutorial/errors.html
+
+
+---
 
 
