@@ -35,12 +35,14 @@ $ git checkout -b <my branch name>
 ```
 $ git branch
 ```
-
-- Push a branch to GitHub
+  
+(..work..work..work.. local commit)  
+  
+- Push a branch and local commits to GitHub (synchronize)  
 ```
 $ git push origin my-new-branch
 ```
-
+  
 - Create a pull request (PR) (**On GitHub page**)  
 "Create a Pull request", select Banch From and Brach To (generally, master) where to merge.  
 "Merge pull request", This will merge your changes into the primary branch.  
@@ -51,6 +53,13 @@ Gets the most recent changes that you or others have merged on GitHub
 ```
 $ git pull origin master
 ```
+  
+- Delete local branch  
+You have to be in another branch to delete it. -D forces deletion.  
+```
+$ git branch -d my-new-branch
+```  
+
 
 ## Remote:
 - Push a local repo to a new empty GitHub repo (synchronize)
