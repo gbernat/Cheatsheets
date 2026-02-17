@@ -3,7 +3,7 @@
 
 - whois
 ```
-Giskard:~ guido$ whois anses.gob.ar
+$ whois anses.gob.ar
 % IANA WHOIS server
 % for more information on IANA, visit http://www.iana.org
 % This query returned 1 object

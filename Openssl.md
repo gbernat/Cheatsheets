@@ -120,6 +120,26 @@ Normally X.509 certificates are ASCII PEM encoded
    # openssl x509 -inform der -in domain.der -out domain.crt
    ```
 
+## How to verify Modulus
+Useful to ensure the correct key is used with a certificate. Modulus must match between priv key, CSR and Cert.
+
+- Private key
+   ```
+   # openssl rsa -noout -modulus -in private.key
+   ```
+- CSR
+   ```
+   # openssl req -noout -modulus -in csr.csr
+   ```
+- Certificate
+   ```
+   # openssl x509 -noout -modulus -in certificate.crt
+   ```
+  - Or getting the cert directly from the site
+     ```
+     # openssl s_client -connect site.com:443 | openssl x509 -noout -modulus -dates
+     ```
+
 ---
 
 ## PKI Concepts
